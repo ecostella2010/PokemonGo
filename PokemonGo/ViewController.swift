@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     //Este no va a decir la posicion del usuario, por lo que el view controller va actuar segun lo que le indica el manager, esto es un patron de delegados
@@ -41,6 +41,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             print("Estamos listos para salir a cszar Pokemons")
+            
+            //Para tomar el control de los pinchos (La cara de chincheta, que debe mostrarse y que no) debemos primero tomar el control del delegate del mapa, para en esta vista debemos incorporar arriba las funciones del delegate
+            self.mapView.delegate = self
+            
             self.mapView.showsUserLocation = true
             //Esto estará monitoreando el cambio de posicion del usuario
             self.manager.startUpdatingLocation()
@@ -51,8 +55,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 
                 //Con el siguiente codigo vamos agregar una chincheta o pokemon encima del jugador
                 if let coordinate = self.manager.location?.coordinate {
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = coordinate
+                    
+                    //Ahora comentamos el siguiente
+                    //let annotation = MKPointAnnotation()
+                    //annotation.coordinate = coordinate
+                    
+                    let randonPos = Int(arc4random_uniform(UInt32(self.pokemons.count)))
+                    let pokemon = self.pokemons[randonPos]
+                    
+                    let annotation = PokemonAnnotation(coordinate: coordinate, pokemon: pokemon)
+                    
+                    
                     
                     //Hacia Arriba, sin embargo las distancias deberian ser aleatorias
                     annotation.coordinate.latitude += (Double(arc4random_uniform(1000)) - 500.0)/400000.0
@@ -88,7 +101,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-    //MARK: Core Location Manager delegate
+    // MARK: Core Location Manager delegate
     //Este metodo se llamará cada vez que el usuario se mueve y nuestro manager lo detecte
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //print ("Me he actualizado la posicion")
@@ -108,6 +121,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                 self.manager.stopUpdatingLocation()
             }
         }
+    }
+    
+    // MARK: Map View Delegate - Para cambiar las imagenes a los pinchos
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        let annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: nil)
+        if annotation is MKUserLocation {
+            annotationView.image =  #imageLiteral(resourceName: "player")
+        } else {
+            
+            //Aqui vamos a recuperar el pokemon aleatorio de arriba
+            let pokemon = (annotation as! PokemonAnnotation).pokemon
+            annotationView.image =  UIImage(named: pokemon.imageFileName!)
+            //annotationView.image =  #imageLiteral(resourceName: "squirtle")
+        }
+        
+        var newFrame = annotationView.frame
+        newFrame.size.height = 40
+        newFrame.size.width = 40
+        annotationView.frame = newFrame
+        
+        return annotationView
     }
     
     @IBAction func updateUserLocation(_ sender: UIButton) {
