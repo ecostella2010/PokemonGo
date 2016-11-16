@@ -18,6 +18,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var updateCount = 0
     let mapDistance : CLLocationDistance = 300
+    let captureDistance : CLLocationDistance = 150
     var pokemonSpanTimer : TimeInterval = 5
     
     //Creamos el arreglo de pokemones que trabajaremos en pantalla
@@ -40,7 +41,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            print("Estamos listos para salir a cszar Pokemons")
+            //print("Estamos listos para salir a cszar Pokemons")
             
             //Para tomar el control de los pinchos (La cara de chincheta, que debe mostrarse y que no) debemos primero tomar el control del delegate del mapa, para en esta vista debemos incorporar arriba las funciones del delegate
             self.mapView.delegate = self
@@ -51,7 +52,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
             Timer.scheduledTimer(withTimeInterval: pokemonSpanTimer, repeats: true, block: { (timer) in
                 //Hay que generar un nuevo pokemon¡¡¡
-                print("Generando un nuevo pokemon")
+                //print("Generando un nuevo pokemon")
                 
                 //Con el siguiente codigo vamos agregar una chincheta o pokemon encima del jugador
                 if let coordinate = self.manager.location?.coordinate {
@@ -114,7 +115,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 //Localizacion del usuario en una regiomn de 100 metros hacia arriba - abajo y 1000 metros hacia derecha e izquierda
                 let region = MKCoordinateRegionMakeWithDistance(coordinate, mapDistance, mapDistance)
                 //Actualizo la posiicon en el mapa
-                self.mapView.setRegion(region, animated: true)
+                self.mapView.setRegion(region, animated: false)
                 updateCount += 1
             } else {
                 //Con esto paramos qe se actualice el mapa segun los movimientos del usuario, sin embargo el usuario igual se seguira moviendo en el mapa.
@@ -145,6 +146,34 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         return annotationView
     }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        //Permite seleccionar mas de una vez el mismo pokemon
+        mapView.deselectAnnotation(view.annotation!, animated: true)
+        
+        //Para que no seleccione al usuario
+        if view.annotation! is MKUserLocation {
+            return
+        }
+        
+        //Localizacion del usuario en una regiomn de 100 metros hacia arriba - abajo y 1000 metros hacia derecha e izquierda
+        let region = MKCoordinateRegionMakeWithDistance(view.annotation!.coordinate, captureDistance, captureDistance)
+        //Actualizo la posiicon en el mapa
+        self.mapView.setRegion(region, animated: true)
+        
+        if let coordinate = self.manager.location?.coordinate {
+            if MKMapRectContainsPoint(mapView.visibleMapRect, MKMapPointForCoordinate(coordinate)) {
+        
+                print("Podemos capturar el pokemon")
+            }
+            
+            else {
+                print("Demasiado lejos para cazar ese pokemon")
+            }
+        }
+        //print("Hemos seleccionado un pincho")
+    }
+    
     
     @IBAction func updateUserLocation(_ sender: UIButton) {
         
