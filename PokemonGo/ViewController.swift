@@ -18,7 +18,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var updateCount = 0
     let mapDistance : CLLocationDistance = 300
-    let captureDistance : CLLocationDistance = 150
+    //Este solo para desarrollo y prueba a 1500 despues debe volver a 150
+    let captureDistance : CLLocationDistance = 1500
     var pokemonSpanTimer : TimeInterval = 5
     
     //Creamos el arreglo de pokemones que trabajaremos en pantalla
@@ -163,8 +164,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         if let coordinate = self.manager.location?.coordinate {
             if MKMapRectContainsPoint(mapView.visibleMapRect, MKMapPointForCoordinate(coordinate)) {
-        
                 print("Podemos capturar el pokemon")
+                
+                //Aqui nos comunicamos con BattleViewController, sin embargo la BattleScene debe conecer que pokemon queremos capturar
+                let vc = BattleViewController()
+                
+                //Del mapa sacamos el pokemon
+                vc.pokemon = (view.annotation! as! PokemonAnnotation).pokemon
+                
+                self.present(vc, animated: true, completion: nil)
+                
             }
             
             else {

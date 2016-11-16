@@ -18,6 +18,8 @@
 		14E6F4731DDB73F6006CD88C /* CoreDateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E6F4721DDB73F6006CD88C /* CoreDateHelper.swift */; };
 		14E6F4751DDBBC63006CD88C /* PokemonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E6F4741DDBBC63006CD88C /* PokemonTableViewCell.swift */; };
 		14E6F4771DDBCF96006CD88C /* PokemonAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E6F4761DDBCF96006CD88C /* PokemonAnnotation.swift */; };
+		14E6F4791DDC0655006CD88C /* BattleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E6F4781DDC0655006CD88C /* BattleScene.swift */; };
+		14E6F47B1DDC07DC006CD88C /* BattleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E6F47A1DDC07DC006CD88C /* BattleViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		14E6F4721DDB73F6006CD88C /* CoreDateHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDateHelper.swift; sourceTree = "<group>"; };
 		14E6F4741DDBBC63006CD88C /* PokemonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonTableViewCell.swift; sourceTree = "<group>"; };
 		14E6F4761DDBCF96006CD88C /* PokemonAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokemonAnnotation.swift; sourceTree = "<group>"; };
+		14E6F4781DDC0655006CD88C /* BattleScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleScene.swift; sourceTree = "<group>"; };
+		14E6F47A1DDC07DC006CD88C /* BattleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BattleViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,10 +74,12 @@
 			children = (
 				1408E3401DDAB89F00D7536B /* AppDelegate.swift */,
 				1408E3421DDAB89F00D7536B /* ViewController.swift */,
-				14E6F4761DDBCF96006CD88C /* PokemonAnnotation.swift */,
+				14E6F47A1DDC07DC006CD88C /* BattleViewController.swift */,
+				14E6F4781DDC0655006CD88C /* BattleScene.swift */,
 				14E6F4701DDB6E5C006CD88C /* PokedexViewController.swift */,
 				14E6F4721DDB73F6006CD88C /* CoreDateHelper.swift */,
 				14E6F4741DDBBC63006CD88C /* PokemonTableViewCell.swift */,
+				14E6F4761DDBCF96006CD88C /* PokemonAnnotation.swift */,
 				1408E3441DDAB89F00D7536B /* Main.storyboard */,
 				1408E34A1DDAB89F00D7536B /* Assets.xcassets */,
 				1408E34C1DDAB89F00D7536B /* LaunchScreen.storyboard */,
@@ -164,12 +170,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14E6F47B1DDC07DC006CD88C /* BattleViewController.swift in Sources */,
 				14E6F4731DDB73F6006CD88C /* CoreDateHelper.swift in Sources */,
 				1408E3431DDAB89F00D7536B /* ViewController.swift in Sources */,
 				14E6F4771DDBCF96006CD88C /* PokemonAnnotation.swift in Sources */,
 				14E6F4711DDB6E5C006CD88C /* PokedexViewController.swift in Sources */,
 				14E6F4751DDBBC63006CD88C /* PokemonTableViewCell.swift in Sources */,
 				1408E3411DDAB89F00D7536B /* AppDelegate.swift in Sources */,
+				14E6F4791DDC0655006CD88C /* BattleScene.swift in Sources */,
 				1408E3491DDAB89F00D7536B /* PokemonGo.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
