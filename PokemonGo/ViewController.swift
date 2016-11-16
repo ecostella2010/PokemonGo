@@ -21,6 +21,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     //Este solo para desarrollo y prueba a 1500 despues debe volver a 150
     let captureDistance : CLLocationDistance = 1500
     var pokemonSpanTimer : TimeInterval = 5
+ 
     
     //Creamos el arreglo de pokemones que trabajaremos en pantalla
     var pokemons : [Pokemon] = []
