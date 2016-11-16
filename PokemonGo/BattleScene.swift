@@ -52,7 +52,7 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
     
     //43 Timer - Cuenta atras Paso 1: Declaramos variable
     var startCount = true
-    var maxTime = 5
+    var maxTime = 30
     var myTime = 30
     var printTime = SKLabelNode(fontNamed: "arial")
     
@@ -295,11 +295,20 @@ class BattleScene: SKScene, SKPhysicsContactDelegate {
         
         //43 Timer - Cuenta atras Paso 11:
         if self.pokemonCaught {
+            //46 Pokemon Capturado Paso 0 :
+            self.pokemonCaught = false
             print ("Pokemon Capturado")
+            //46 Pokemon Capturado Paso 1 : incrementamos
+            self.pokemon.timesCaught += 1
+            //46 Pokemon Capturado Paso 2 : persistencia en core data
+             (UIApplication.shared.delegate as! AppDelegate).saveContext()
+            
             //45 Mensajes y Usabilidad Paso 8: Mensaje Capturado
             showMessageWith(imageNamed: "gotcha")
         }
         else{
+            //46 Pokemon Capturado Paso 0 :
+            self.pokemonCaught = false
             print ("Me he quedado sin tiempo")
             //45 Mensajes y Usabilidad Paso 9: Mensaje Escapado
             showMessageWith(imageNamed: "footprints")
