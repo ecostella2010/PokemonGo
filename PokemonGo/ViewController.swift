@@ -19,12 +19,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var updateCount = 0
     let mapDistance : CLLocationDistance = 300
     //Este solo para desarrollo y prueba a 1500 despues debe volver a 150
-    let captureDistance : CLLocationDistance = 1500
+    let captureDistance : CLLocationDistance = 150
     var pokemonSpanTimer : TimeInterval = 5
  
     
     //Creamos el arreglo de pokemones que trabajaremos en pantalla
     var pokemons : [Pokemon] = []
+    
+    
+    //49 Bug Aparece doble pokemon Paso 1: Declaro Variable
+    var hasStartedTheMap = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,50 +48,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            //print("Estamos listos para salir a cszar Pokemons")
-            
-            //Para tomar el control de los pinchos (La cara de chincheta, que debe mostrarse y que no) debemos primero tomar el control del delegate del mapa, para en esta vista debemos incorporar arriba las funciones del delegate
-            self.mapView.delegate = self
-            
-            self.mapView.showsUserLocation = true
-            //Esto estará monitoreando el cambio de posicion del usuario
-            self.manager.startUpdatingLocation()
-            
-            Timer.scheduledTimer(withTimeInterval: pokemonSpanTimer, repeats: true, block: { (timer) in
-                //Hay que generar un nuevo pokemon¡¡¡
-                //print("Generando un nuevo pokemon")
-                
-                //Con el siguiente codigo vamos agregar una chincheta o pokemon encima del jugador
-                if let coordinate = self.manager.location?.coordinate {
-                    
-                    //Ahora comentamos el siguiente
-                    //let annotation = MKPointAnnotation()
-                    //annotation.coordinate = coordinate
-                    
-                    let randonPos = Int(arc4random_uniform(UInt32(self.pokemons.count)))
-                    let pokemon = self.pokemons[randonPos]
-                    
-                    let annotation = PokemonAnnotation(coordinate: coordinate, pokemon: pokemon)
-                    
-                    
-                    
-                    //Hacia Arriba, sin embargo las distancias deberian ser aleatorias
-                    annotation.coordinate.latitude += (Double(arc4random_uniform(1000)) - 500.0)/400000.0
-                    annotation.coordinate.longitude += (Double(arc4random_uniform(1000)) - 500.0)/400000.0
-
-                    //Hacia Abajo o al sur sin embargo las distancias deberian ser aleatorias
-                    //annotation.coordinate.latitude -= 0.001
-                    //annotation.coordinate.longitude -= 0.001
-
-                    
-                    
-                    //Lo mostramos en el mapa
-                    self.mapView.addAnnotation(annotation)
-                }
-                
-                
-            })
-            
+            //48 El bug de la primera vez Paso 4 : El codigo se lleva a funcion para ser reutilizada y luego se invoca la funcion
+            self.setupMap()
         }
         else {
             //Siempre que la app esta en uso.
@@ -123,6 +86,63 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 //Con esto paramos qe se actualice el mapa segun los movimientos del usuario, sin embargo el usuario igual se seguira moviendo en el mapa.
                 self.manager.stopUpdatingLocation()
             }
+        }
+    }
+    
+    //48 El bug de la primera vez Paso 1 :
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        //48 El bug de la primera vez Paso 6 :
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            //48 El bug de la primera vez Paso 7 : Se configra el mapa
+            self.setupMap()
+        }
+    }
+    
+    //48 El bug de la primera vez Paso 2 :
+    func setupMap(){
+        
+        //49 Bug Aparece doble pokemon Paso 2: Valido
+        if !self.hasStartedTheMap {
+            //49 Bug Aparece doble pokemon Paso 3: Para que no lo haga por segunda vez
+            self.hasStartedTheMap = true
+            
+            //48 El bug de la primera vez Paso 3 :
+            //print("Estamos listos para salir a cszar Pokemons")
+            //Para tomar el control de los pinchos (La cara de chincheta, que debe mostrarse y que no) debemos primero tomar el control del delegate del mapa, para en esta vista debemos incorporar arriba las funciones del delegate
+            self.mapView.delegate = self
+        
+            self.mapView.showsUserLocation = true
+            //Esto estará monitoreando el cambio de posicion del usuario
+            self.manager.startUpdatingLocation()
+        
+            Timer.scheduledTimer(withTimeInterval: pokemonSpanTimer, repeats: true, block: { (timer) in
+                //Hay que generar un nuevo pokemon¡¡¡
+                //print("Generando un nuevo pokemon")
+            
+                //Con el siguiente codigo vamos agregar una chincheta o pokemon encima del jugador
+                if let coordinate = self.manager.location?.coordinate {
+                
+                    //Ahora comentamos el siguiente
+                    //let annotation = MKPointAnnotation()
+                    //annotation.coordinate = coordinate
+                
+                    let randonPos = Int(arc4random_uniform(UInt32(self.pokemons.count)))
+                    let pokemon = self.pokemons[randonPos]
+                
+                    let annotation = PokemonAnnotation(coordinate: coordinate, pokemon: pokemon)
+                
+                    //Hacia Arriba, sin embargo las distancias deberian ser aleatorias
+                    annotation.coordinate.latitude += (Double(arc4random_uniform(1000)) - 500.0)/400000.0
+                    annotation.coordinate.longitude += (Double(arc4random_uniform(1000)) - 500.0)/400000.0
+                
+                    //Hacia Abajo o al sur sin embargo las distancias deberian ser aleatorias
+                    //annotation.coordinate.latitude -= 0.001
+                    //annotation.coordinate.longitude -= 0.001
+                
+                    //Lo mostramos en el mapa
+                    self.mapView.addAnnotation(annotation)
+                }
+            })
         }
     }
     
@@ -165,7 +185,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         if let coordinate = self.manager.location?.coordinate {
             if MKMapRectContainsPoint(mapView.visibleMapRect, MKMapPointForCoordinate(coordinate)) {
-                print("Podemos capturar el pokemon")
+                //print("Podemos capturar el pokemon")
                 
                 //Aqui nos comunicamos con BattleViewController, sin embargo la BattleScene debe conecer que pokemon queremos capturar
                 let vc = BattleViewController()
@@ -173,12 +193,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 //Del mapa sacamos el pokemon
                 vc.pokemon = (view.annotation! as! PokemonAnnotation).pokemon
                 
+                //47 Alertas y ayudas al usuario Paso 1 : Permite ocultar el pokemon que pinchamos para poder capturarlo
+                self.mapView.removeAnnotation(view.annotation!)
+                
                 self.present(vc, animated: true, completion: nil)
                 
             }
             
             else {
                 print("Demasiado lejos para cazar ese pokemon")
+                //47 Alertas y ayudas al usuario Paso 2 : Mostramos mensaje al usuario cuando esta demasiado lejos
+                let pokemon = (view.annotation! as! PokemonAnnotation).pokemon
+                let alertController = UIAlertController(title: "Estás demasiado lejos!", message: "Acercate  ese \(pokemon.name!) para poder capturarlo.", preferredStyle: .alert)
+                let OkAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alertController.addAction(OkAction)
+                self.present(alertController, animated: true, completion: nil)
+                
+                
+                
             }
         }
         //print("Hemos seleccionado un pincho")
