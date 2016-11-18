@@ -11,27 +11,27 @@ import CoreData
 
 func createAllPokemons () {
     
-    createPokemon (name: "Abra", with: "abra")
-    createPokemon (name: "Bellsprout", with: "bellsprout")
-    createPokemon (name: "Bullbasaur", with: "bullbasaur")
-    createPokemon (name: "Caterpie", with: "caterpie")
-    createPokemon (name: "Charmander", with: "charmander")
-    createPokemon (name: "Jigglypuff", with: "jigglypuff")
-    createPokemon (name: "Meowth", with: "meowth")
-    createPokemon (name: "Mew", with: "mew")
-    createPokemon (name: "Pikachu", with: "pikachu-2")
-    createPokemon (name: "Squirtle", with: "squirtle")
-    createPokemon (name: "Snorlax", with: "snorlax")
-    createPokemon (name: "Zubat", with: "zubat")
-    createPokemon (name: "Dratini", with: "dratini")
-    createPokemon (name: "Eevee", with: "eevee")
-    createPokemon (name: "Mankey", with: "mankey")
-    createPokemon (name: "Pidgey", with: "pidgey")
-    createPokemon (name: "Psyduck", with: "psyduck")
-    createPokemon (name: "Rattata", with: "rattata")
-    createPokemon (name: "Venonat", with: "venonat")
-    createPokemon (name: "Weedle", with: "weedle")
-    
+    //54 No todos los pokemon son iguales Paso 3: agregar parametro frecuency
+    createPokemon (name: "Abra", with: "abra",frecuency: 70)
+    createPokemon (name: "Bellsprout", with: "bellsprout",frecuency: 80)
+    createPokemon (name: "Bullbasaur", with: "bullbasaur",frecuency: 22)
+    createPokemon (name: "Caterpie", with: "caterpie",frecuency: 84)
+    createPokemon (name: "Charmander", with: "charmander",frecuency: 17)
+    createPokemon (name: "Jigglypuff", with: "jigglypuff",frecuency: 67)
+    createPokemon (name: "Meowth", with: "meowth",frecuency: 65)
+    createPokemon (name: "Mew", with: "mew",frecuency: 1)
+    createPokemon (name: "Pikachu", with: "pikachu-2",frecuency: 8)
+    createPokemon (name: "Squirtle", with: "squirtle",frecuency: 20)
+    createPokemon (name: "Snorlax", with: "snorlax",frecuency: 3)
+    createPokemon (name: "Zubat", with: "zubat",frecuency: 100)
+    createPokemon (name: "Dratini", with: "dratini",frecuency: 2)
+    createPokemon (name: "Eevee", with: "eevee",frecuency: 4)
+    createPokemon (name: "Mankey", with: "mankey",frecuency: 60)
+    createPokemon (name: "Pidgey", with: "pidgey",frecuency: 85)
+    createPokemon (name: "Psyduck", with: "psyduck",frecuency: 50)
+    createPokemon (name: "Rattata", with: "rattata",frecuency: 95)
+    createPokemon (name: "Venonat", with: "venonat",frecuency: 76)
+    createPokemon (name: "Weedle", with: "weedle",frecuency: 78)
     
     
     (UIApplication.shared.delegate as! AppDelegate).saveContext()
@@ -40,13 +40,15 @@ func createAllPokemons () {
     
 }
 
-func createPokemon(name:String, with imageNamed:String) {
+//54 No todos los pokemon son iguales Paso 2: agregar parametro frecuency
+func createPokemon(name:String, with imageNamed:String, frecuency: Int16) {
     //Esta se encargará de sacar los pokemon de core data
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     let pokemon = Pokemon(context: context)
     pokemon.name = name
     pokemon.imageFileName = imageNamed
+    pokemon.frecuency = frecuency
     
 }
 
